@@ -1,2 +1,1 @@
-# assign6-mergesort
-Assign6 - MergeSort
+## Assign6 - MergeSort

@@ -3,7 +3,7 @@ package mergesort;
 public class MergeSort {
 
 	public static void main(String[] args) {
-		int[] array1 = {109,11,43,87,27,54,8,32,71,44,12,0};
+		int[] array1 = {109,11,43,87,27,54,8,32,71,912,44,12,0};
 		
 		showArray(array1);
 		mergeSort(array1);
@@ -40,11 +40,15 @@ public class MergeSort {
 		if (left < right) {
 			mergeSort(theArray, left, mid); 
 			mergeSort(theArray, mid+1, right);
-			splitAndSort(theArray, left,  right, mid);
+			int[] merged = 	split(theArray, left,  right, mid);
+			for (int i = 0; i < merged.length; i++) {
+				theArray[left + i] = merged[i];
+			}
 		}
+		
 	}
 	
-	public static void splitAndSort(int[] arr, int left, int right, int mid) {
+	public static int[] split(int[] arr, int left, int right, int mid) {
 		int[] temp1 = new int[mid - left +  1] ; //partitions of array
 		int[] temp2 = new int[right - mid];
 		for (int i = 0; i < temp1.length; i++) {
@@ -53,16 +57,17 @@ public class MergeSort {
 		for (int k = 0; k < temp2.length; k++) {
 			temp2[k] = arr[mid + 1 + k]; //after the middle?
 		}
-		int[] merged = merge(temp1, temp2, 0);
+		int[] merged = merge(temp1, temp2); //copy up here
 		for (int i = 0; i < merged.length; i++) {
 			arr[left + i] = merged[i];
 		}
+		return merged;
 	}
 	
-	public static int[] merge(int[] temp1, int[] temp2, int left) {
+	public static int[] merge(int[] temp1, int[] temp2) {
 		int[] merged = new int[temp1.length + temp2.length];
 		int i = 0, k = 0; // indices of subarrays
-		int l = left; //index of merged array
+		int l = 0; //index of merged array
 		while (i < temp1.length && k < temp2.length) { // stop once one of them runs out of elements
 			if (temp1[i] < temp2[k]) { // checking and then merging
 				merged[l] = temp1[i];
@@ -74,7 +79,7 @@ public class MergeSort {
 			l++;
 		}
 		
-		while (i < temp1.length) {
+		while (i < temp1.length) { //continue on
 			merged[l] = temp1[i];
 			i++;
 			l++;
@@ -84,7 +89,7 @@ public class MergeSort {
 			l++;
 			k++;
 		}
-		return merged;
+		return merged; //return the merged array
 	}
 	 
 	public static void mergeSort(int[] array) {

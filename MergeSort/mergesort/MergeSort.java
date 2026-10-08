@@ -3,7 +3,7 @@ package mergesort;
 public class MergeSort {
 
 	public static void main(String[] args) {
-		int[] array1 = {11,43,87,27,54,8,32,71,44,12};
+		int[] array1 = {109,11,43,87,27,54,8,32,71,44,12,0};
 		
 		showArray(array1);
 		mergeSort(array1);
@@ -36,46 +36,57 @@ public class MergeSort {
 		//*  4. Replace the original array section with the merged     *
 		//*     array.                                                 *
 		//**************************************************************
-		if (left >= right) {
- 		
-			int mid = (left+right)/2;
-
+		int mid = (left+right)/2;
+		if (left < right) {
+			mergeSort(theArray, left, mid); 
+			mergeSort(theArray, mid+1, right);
+			splitAndSort(theArray, left,  right, mid);
 		}
 	}
 	
 	public static void splitAndSort(int[] arr, int left, int right, int mid) {
-		int[] temp1 = new int[mid - left] ; //partitions of array
+		int[] temp1 = new int[mid - left +  1] ; //partitions of array
 		int[] temp2 = new int[right - mid];
-		
 		for (int i = 0; i < temp1.length; i++) {
 			temp1[i] = arr[left + i]; //before the middle?
 		}
 		for (int k = 0; k < temp2.length; k++) {
 			temp2[k] = arr[mid + 1 + k]; //after the middle?
 		}
-		
+		showArray(temp1);
+		showArray(temp2);
+		int[] merged = merge(temp1, temp2, 0);
+		for (int i = 0; i < merged.length; i++) {
+			arr[left + i] = merged[i];
+		}
+	}
+	
+	public static int[] merge(int[] temp1, int[] temp2, int left) {
+		int[] merged = new int[temp1.length + temp2.length];
 		int i = 0, k = 0; // indices of subarrays
 		int l = left; //index of merged array
-		
 		while (i < temp1.length && k < temp2.length) { // stop once one of them runs out of elements
 			if (temp1[i] < temp2[k]) { // checking and then merging
-				arr[l] = temp2[i];
+				merged[l] = temp1[i];
 				i++;
 			} else {
-				arr[l] = temp1[k];
+				merged[l] = temp2[k];
 				k++;
 			}
 			l++;
 		}
 		
 		while (i < temp1.length) {
-			arr[l] = temp1[i];
+			merged[l] = temp1[i];
 			i++;
 			l++;
 		}
 		while (k < temp2.length) {
-			arr[l] = temp2[k];
+			merged[l] = temp2[k];
+			l++;
+			k++;
 		}
+		return merged;
 	}
 	 
 	public static void mergeSort(int[] array) {

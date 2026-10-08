@@ -53,8 +53,6 @@ public class MergeSort {
 		for (int k = 0; k < temp2.length; k++) {
 			temp2[k] = arr[mid + 1 + k]; //after the middle?
 		}
-		showArray(temp1);
-		showArray(temp2);
 		int[] merged = merge(temp1, temp2, 0);
 		for (int i = 0; i < merged.length; i++) {
 			arr[left + i] = merged[i];
